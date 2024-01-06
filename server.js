@@ -56,13 +56,13 @@ const db = mysql.createConnection(
 //     inquirer.prompt(questions)
 //     .then(function(answer) {
 //         if (task === 'View All Departments') {
-//             //**write function to view all departments */
+//             return viewDepartments();
 //             init();
 //         } else if (task === 'View All Roles') {
-//             //**write function to view all roles */
+//             return viewRoles();
 //             init();
 //         } else if (task === 'View All Employees') {
-//             //**write function to view all employees */
+//             return viewEmployees();
 //             init();
 //         } else if (task === 'Add a Department') {
 //             //**write function to add department to table */
@@ -82,23 +82,44 @@ const db = mysql.createConnection(
 // }    
 
 
-//view all departments
-db.query(`Select * from department`, (err,result) => {
-    if (err) throw err;
-    console.table(result);
-});
+// //view all departments
+// const viewDepartments = () => {
+// db.query(`Select * from department`, (err,result) => {
+//     if (err) throw err;
+//     console.table(result);
+// });
+// };
 
-//view all roles
-db.query(`Select * from role`, (err,result) => {
-    if (err) throw err;
-    console.table(result);
-});
+// //view all roles
+// const viewRoles = () => {
+// db.query(`Select * from role`, (err,result) => {
+//     if (err) throw err;
+//     console.table(result);
+// });
+// };
 
-//view all employees
-db.query(`Select * from employee join role on employee.role_id = role.title`, (err,result) => {
-    if (err) throw err;
-    console.table(result);
-});
+// //view all employees
+// const viewEmployees = () => {
+// db.query(`Select * from employee join role on employee.role_id = role.id`, (err,result) => {
+//     if (err) throw err;
+//     console.table(result);
+// });
+// };
 
+//add a department
+const addDepartment = () => {
+    inquirer.prompt([{
+        type: 'input',
+        message: 'Enter Department you would like to add.',
+        name: 'departmentAdd',
+    }])
+    .then((input) => {
+        db.query(`INSERT INTO department (name) VALUES where id = ?`, input.departmentAdd, (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(result);
+        });
+    });
+};
 
-    
