@@ -9,7 +9,7 @@ const db = mysql.createConnection(
       host: 'localhost',
       user: 'root',
       password: 'password',
-      database: 'company_db'
+      database: 'company_db',
     }
   );
 
@@ -65,10 +65,10 @@ const db = mysql.createConnection(
 //             return viewEmployees();
 //             init();
 //         } else if (task === 'Add a Department') {
-//             //**write function to add department to table */
+//             return addDepartment();
 //             init();
 //         } else if (task === 'Add a Role') {
-//             //**write a function to add a role */
+//             return addRole();
 //             init();
 //         } else if (task === 'Add an Employee') {
 //             //**write a function to add an employee */
@@ -106,20 +106,49 @@ const db = mysql.createConnection(
 // });
 // };
 
-//add a department
-const addDepartment = () => {
-    inquirer.prompt([{
-        type: 'input',
-        message: 'Enter Department you would like to add.',
-        name: 'departmentAdd',
-    }])
-    .then((input) => {
-        db.query(`INSERT INTO department (name) VALUES where id = ?`, input.departmentAdd, (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log(result);
-        });
-    });
-};
+// //add a department
+// const addDepartment = () => {
+//     inquirer.prompt([{
+//         type: 'input',
+//         message: 'Enter Department you would like to add.',
+//         name: 'departmentAdd',
+//     }])
+//     .then((input) => {
+//         db.query(`INSERT INTO department (name) VALUES (?)`, input.departmentAdd, (err, result) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         console.log(`Department ${input.departmentAdd} has been added.`);
+//         });
+//     });
+// };
 
+
+// //add a role
+// const addRole = () => {
+//     inquirer.prompt([
+//         {
+//             type: 'input',
+//             message: 'Enter Role you would like to add.',
+//             name: 'RoleAdd',
+//         },
+//         {   
+//             type: 'input',
+//             message: 'Enter the salary for the role.',
+//             name: 'SalaryAdd',
+//         },
+//         {
+//             type: 'input',
+//             message: 'Enter which department this role is in.', //TODO: figure out how to list current departments for user to choose from
+//             name: 'RoleAddDepartment',
+//         },
+// ])
+//     .then((input) => {
+//         db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [input.RoleAdd, input.SalaryAdd, input.RoleAddDepartment], (err, result) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         console.log(`Role ${input.RoleAdd} with salary ${input.SalaryAdd} has been added to department ${input.RoleAddDepartment}.`);
+//         });
+//     });
+// };
