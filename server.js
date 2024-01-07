@@ -123,37 +123,37 @@ const db = mysql.createConnection(
 // };
 
 
-//add a role
-const addRole = () => {
-    inquirer.prompt([
-        {
-            type: 'input',
-            message: 'Enter Role you would like to add.',
-            name: 'RoleAdd',
-        },
-        {   
-            type: 'input',
-            message: 'Enter the salary for the role.',
-            name: 'SalaryAdd',
-        },
-        {
-            type: 'list',
-            message: 'Enter which department this role is in.', //TODO: figure out how to list current departments for user to choose from
-            name: 'RoleAddDepartment',
-            choices: [ 1, 2 ],
-        },
-])
-    .then((input) => {
-        db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [input.RoleAdd, input.SalaryAdd, input.RoleAddDepartment], (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log(`Role ${input.RoleAdd} with salary ${input.SalaryAdd} has been added to department ${input.RoleAddDepartment}.`);
-        });
-    });
-};
+// //add a role
+// const addRole = () => {
+//     inquirer.prompt([
+//         {
+//             type: 'input',
+//             message: 'Enter Role you would like to add.',
+//             name: 'RoleAdd',
+//         },
+//         {   
+//             type: 'input',
+//             message: 'Enter the salary for the role.',
+//             name: 'SalaryAdd',
+//         },
+//         {
+//             type: 'list',
+//             message: 'Enter which department this role is in.', //TODO: figure out how to list current departments for user to choose from
+//             name: 'RoleAddDepartment',
+//             choices: [ 1, 2 ],
+//         },
+// ])
+//     .then((input) => {
+//         db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [input.RoleAdd, input.SalaryAdd, input.RoleAddDepartment], (err, result) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         console.log(`Role ${input.RoleAdd} with salary ${input.SalaryAdd} has been added to department ${input.RoleAddDepartment}.`);
+//         });
+//     });
+// };
 
-addRole();
+
 
 
 // //add an employee
@@ -192,3 +192,30 @@ addRole();
 // };
 
 
+//update employee role
+const updateEmployee = () => {
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Which employee would you like to update.',
+            name: 'employeeUpdate',
+            choices: [1, 2, 3], //figure out how to list employees currently in employee table
+        },
+        {
+            type: 'list',
+            message: 'What is their new role?', 
+            name: 'roleUpdate',
+            choices: [1, 2],  //TODO: figure out how to list all role_id options in employee table
+        },
+])
+    .then((input) => {
+        db.query(`UPDATE employee SET role_id = ? WHERE id = ?`, [input.roleUpdate, input.employeeUpdate], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(`The role has been updated to ${input.roleUpdate} for employee ${input.employeeUpdate}.`);
+        });
+    });
+};
+
+updateEmployee();
