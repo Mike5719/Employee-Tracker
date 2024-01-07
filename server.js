@@ -21,7 +21,6 @@ const db = mysql.createConnection(
 
 
 
-
 // let questionsArray = ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role'];
 
 
@@ -124,67 +123,72 @@ const db = mysql.createConnection(
 // };
 
 
-// //add a role
-// const addRole = () => {
+//add a role
+const addRole = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter Role you would like to add.',
+            name: 'RoleAdd',
+        },
+        {   
+            type: 'input',
+            message: 'Enter the salary for the role.',
+            name: 'SalaryAdd',
+        },
+        {
+            type: 'list',
+            message: 'Enter which department this role is in.', //TODO: figure out how to list current departments for user to choose from
+            name: 'RoleAddDepartment',
+            choices: [ 1, 2 ],
+        },
+])
+    .then((input) => {
+        db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [input.RoleAdd, input.SalaryAdd, input.RoleAddDepartment], (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(`Role ${input.RoleAdd} with salary ${input.SalaryAdd} has been added to department ${input.RoleAddDepartment}.`);
+        });
+    });
+};
+
+addRole();
+
+
+// //add an employee
+// const addEmployee = () => {
 //     inquirer.prompt([
 //         {
 //             type: 'input',
-//             message: 'Enter Role you would like to add.',
-//             name: 'RoleAdd',
+//             message: "Enter the employee's first name.",
+//             name: 'firstName',
 //         },
 //         {   
 //             type: 'input',
-//             message: 'Enter the salary for the role.',
-//             name: 'SalaryAdd',
+//             message: "Enter the employee's last name.",
+//             name: 'lastName',
+//         },
+//          //TODO: figure out how to list existing role_id's and manager_id's for user to choose from
+//         {
+//             type: 'input',
+//             message: "Enter the employee's role.",
+//             name: 'employeeRole',
 //         },
 //         {
 //             type: 'input',
-//             message: 'Enter which department this role is in.', //TODO: figure out how to list current departments for user to choose from
-//             name: 'RoleAddDepartment',
+//             message: "Enter the employee's manager",
+//             name: 'employeeManager',
 //         },
 // ])
 //     .then((input) => {
-//         db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [input.RoleAdd, input.SalaryAdd, input.RoleAddDepartment], (err, result) => {
+//         db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, [input.firstName, input.lastName, input.employeeRole, input.employeeManager], (err, result) => {
 //         if (err) {
 //             console.log(err);
 //         }
-//         console.log(`Role ${input.RoleAdd} with salary ${input.SalaryAdd} has been added to department ${input.RoleAddDepartment}.`);
+//         console.log(`${input.firstName} ${input.lastName} with role ${input.employeeRole} and manager ${input.employeeManager} has been added.`);
 //         });
 //     });
 // };
 
 
-//add an employee
-const addEmployee = () => {
-    inquirer.prompt([
-        {
-            type: 'input',
-            message: "Enter the employee's first name.",
-            name: 'firstName',
-        },
-        {   
-            type: 'input',
-            message: "Enter the employee's last name.",
-            name: 'lastName',
-        },
-        {
-            type: 'input',
-            message: "Enter the employee's role.",
-            name: 'employeeRole',
-        },
-        {
-            type: 'input',
-            message: "Enter the employee's manager",
-            name: 'employeeManager',
-        },
-])
-    .then((input) => {
-        //TODO: figure out how to list existing role_id's and manager_id's for user to choose from
-        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, [input.firstName, input.lastName, input.employeeRole, input.employeeManager], (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log(`${input.firstName} ${input.lastName} with role ${input.employeeRole} and manager ${input.employeeManager} has been added.`);
-        });
-    });
-};
