@@ -1,9 +1,7 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-//library to display tables in the console
-const table = require('cli-table');
 
-
+//create mysql connection
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -21,12 +19,8 @@ db.connect(function (err) {
 //set query to be asynchronous and bind it to the object that it is being used in ie. "this" to refer to the object it is being used in.
 const query = db.promise().query.bind(db.promise())
 
-
-
+//array of questions prompting user for input
 let questionsArray = ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role'];
-
-
-// //array of questions prompting user for input
 const questions = [
     {
         type: 'list',
@@ -83,7 +77,8 @@ const viewRoles = () => {
 
 // //view all employees
 const viewEmployees = () => {
-    db.query(`Select * from employee join role on employee.role_id = role.id`, (err, result) => {
+    //db.query(`Select * from employee join role on employee.role_id = role.id`, (err, result) => {
+    db.query(`Select first_name, last_name, role_id, manager_id from employee inner join role on employee.role_id = role.id`, (err, result) => {
         if (err) throw err;
         console.table(result);
     });
@@ -148,7 +143,7 @@ const addRole = async () => {
 };
 
 
-// // //add an employee
+//add an employee
 const addEmployee = async () => {
     const [roleChoices] = await query(`SELECT * FROM role`);
     const newRoleChoices = roleChoices.map(({ id, title, salary, department_id }) => ({
@@ -201,7 +196,7 @@ const addEmployee = async () => {
 };
 
 
-// //update employee role
+//update employee role
 const updateEmployee = async () => {
     const [empList] = await query(`SELECT * FROM employee`);
     const newEmpList = empList.map(({ id, first_name, last_name, role_id, manager_id }) => ({
@@ -233,7 +228,6 @@ const updateEmployee = async () => {
         },
     ])
         .then((input) => {
-            console.log(input);
             db.query(`UPDATE employee SET role_id=? WHERE id=?`, [input.roleUpdate, input.employeeUpdate], (err, result) => {
                 if (err) {
                     console.log(err);
