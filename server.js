@@ -77,7 +77,6 @@ const viewRoles = () => {
 
 // //view all employees
 const viewEmployees = () => {
-    //db.query(`Select * from employee join role on employee.role_id = role.id`, (err, result) => {
     db.query(`Select first_name, last_name, role_id, manager_id from employee inner join role on employee.role_id = role.id`, (err, result) => {
         if (err) throw err;
         console.table(result);
