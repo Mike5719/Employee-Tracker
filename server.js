@@ -95,7 +95,7 @@ function init() {
         } else if (answer.task === 'Update an Employee Role') {
             return updateEmployee();
         } else {
-            init ();
+            return;
         };
     });
 }; 
@@ -107,8 +107,8 @@ const viewDepartments = () => {
 db.query(`Select * from department`, (err,result) => {
     if (err) throw err;
     console.table(result);
-    init();
 });
+init();
 };
 
 
@@ -118,14 +118,16 @@ db.query(`Select * from role`, (err,result) => {
     if (err) throw err;
     console.table(result);
 });
+init();
 };
 
 // //view all employees
 const viewEmployees = () => {
 db.query(`Select * from employee join role on employee.role_id = role.id`, (err,result) => {
     if (err) throw err;
-    console.table(result);
+    console.table(result);    
 });
+init();
 };
 
 // //add a department
@@ -143,6 +145,7 @@ const addDepartment = () => {
         console.log(`Department ${input.departmentAdd} has been added.`);
         });
     });
+    init();
 };
 
 
@@ -182,6 +185,7 @@ const addRole = async () => {
         console.log(`Role ${input.RoleAdd} with salary ${input.SalaryAdd} has been added to department ${input.RoleAddDepartment}.`);
         });
     });
+    init();
 };
 
 
@@ -237,6 +241,7 @@ const addEmployee = async () => {
         console.log(`${input.firstName} ${input.lastName} has been added.`);
         });
     });
+    init();
 };
 
 
@@ -282,6 +287,7 @@ const updateEmployee = async () => {
         console.log(`The employee role has been updated.`);
         });
     });
+    init();
 };
 
 init();
